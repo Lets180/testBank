@@ -1,0 +1,4 @@
+2022-02-02 15:40:04 INFO  support.Logging:19 - Connection established
+2022-02-02 15:55:58 ERROR support.Logging:26 - Database 12 is not exist
+2022-02-02 15:58:02 ERROR support.Logging:26 - Database 12 is not exist
+2022-02-02 16:10:43 ERROR support.Logging:37 - Database 12 is not exist

@@ -8,6 +8,8 @@ import model.Client;
 import repository.*;
 import Exception.*;
 import database.*;
+import support.Logging;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.sql.Connection;
@@ -20,23 +22,35 @@ import java.nio.file.*;
 public class Main {
 public static int amountClients = 0;
 public static int nextNumber = 0;
+public static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Logging.class);
     public static void main(String[] args) {
 	// write your code here
+        logger.info("Application TheBank is started");
         if (Files.exists(Path.of("e:\\Bases\\clientBase.csv")) != true) {
             Path path1 = Path.of("e:\\Bases");
             try {
                 Files.createDirectory(path1);
+                logger.info("Created directory: "+path1.toString());
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
+                logger.error("Error of create directory");
             }
         }
+        Connection conn=null;
         Scanner scDb = new Scanner(System.in);
-        System.out.println("Enter password to get access to database");
-        String passwordDb = scDb.nextLine();
+       // System.out.println("Enter password to get access to database");
+       // String passwordDb = scDb.nextLine();
         DbFunctions db = new DbFunctions();
-        System.out.println("Enter name of database for connect");
-        String nameDataBase = scDb.nextLine();
-        Connection conn=db.connectDb(nameDataBase,"postgres","180180141");
+        //boolean existDataBase=false;
+        //while(!existDataBase) {
+        //    System.out.println("Enter name of database for connect");
+        //    String nameDataBase = scDb.nextLine();
+            conn = db.connectDb("postgres");
+            System.out.println(conn.toString());
+        //    if (conn!=null) {
+        //        existDataBase = true;
+        //    }
+       // }
         boolean inf = false;
         while (inf==false) {
             System.out.println("Press 1 if you want create table");
@@ -84,7 +98,8 @@ public static int nextNumber = 0;
                     nameTable = scDb.nextLine();
                     db.deleteTable(conn,nameTable);
                     break;
-                case "8":inf=true;
+                case "8":logger.info("Work with database is finished(normally, user command)");
+                    inf=true;
                     break;
                 default:
                     System.out.println("Incorrect command");
@@ -165,6 +180,7 @@ public static int nextNumber = 0;
                         UpdateBase.updateBalanceClient(baseOfClients,nameFile,id,money,infinity);
                         break;
                 case "7" :infinity=false;
+                        logger.info("Application finished (normally,user command)");
                         break;
                 default:System.out.println("Incorrect command");
                         break;
